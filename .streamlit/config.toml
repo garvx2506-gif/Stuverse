@@ -1,0 +1,42 @@
+# StudyVerse Premium Theme
+# Deep purple-blue dark theme with violet accents
+
+[theme]
+base = "dark"
+primaryColor = "#8b5cf6"
+backgroundColor = "#0f0a1a"
+secondaryBackgroundColor = "#1a1128"
+codeBackgroundColor = "#1a1128"
+textColor = "#f0ede5"
+linkColor = "#a78bfa"
+borderColor = "#2d2145"
+showWidgetBorder = true
+showSidebarBorder = true
+baseRadius = "12px"
+buttonRadius = "12px"
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+codeFont = "'JetBrains Mono':https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+codeFontSize = "0.85rem"
+codeTextColor = "#e4e4e7"
+baseFontSize = 14
+baseFontWeight = 400
+headingFontSizes = ["36px", "28px", "22px", "18px", "14px", "12px"]
+headingFontWeights = [700, 600, 600, 500, 500, 500]
+linkUnderline = false
+chartCategoricalColors = ["#8b5cf6", "#3b82f6", "#ec4899", "#14b8a6", "#f59e0b", "#ef4444", "#22c55e"]
+
+violetColor = "#8b5cf6"
+blueColor = "#3b82f6"
+greenColor = "#22c55e"
+yellowColor = "#f59e0b"
+orangeColor = "#f97316"
+redColor = "#ef4444"
+
+[theme.sidebar]
+backgroundColor = "#0a0612"
+secondaryBackgroundColor = "#140e22"
+codeBackgroundColor = "#140e22"
+textColor = "#f0ede5"
+borderColor = "#2d2145"
+primaryColor = "#8b5cf6"
+linkColor = "#a78bfa"

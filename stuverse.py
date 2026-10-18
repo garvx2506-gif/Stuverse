@@ -976,26 +976,7 @@ def stream_words(text, words_per_chunk=1, delay=0.012):
         yield word + (" " if i < len(words) - 1 else "")
         time.sleep(delay)
 
-# ---------- 3D Black Hole Cosmos Header ----------
-st.markdown("""
-<div class="blackhole-container">
-    <div class="blackhole-core">
-        <div class="blackhole-glow"></div>
-        <div class="blackhole-accretion"></div>
-        <div class="blackhole-ring"></div>
-        <div class="blackhole-ring-2"></div>
-        <div class="blackhole-event-horizon"></div>
-    </div>
-    <h1 class="cosmos-title">Stuverse AI</h1>
-    <p class="cosmos-subtitle">Your Personal AI Teacher &bull; Ask Doubts &bull; Learn with Confidence</p>
-    <div style="margin-top: 0.5rem; text-align: center;">
-        <span class="feature-pill">⚡ Instant Solutions</span>
-        <span class="feature-pill">📖 Clear Explanations</span>
-        <span class="feature-pill">📸 Photo & PDF Doubts</span>
-        <span class="feature-pill">🎓 Built for Students</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+
 
 # ---------- Render Existing Messages ----------
 messages = current_chat.get("messages", [])

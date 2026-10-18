@@ -236,13 +236,37 @@ export default function Home() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Stardust cursor particle trail canvas
+  // Persistent Twinkling Cosmic Stars + Cursor Trail Canvas
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
+
+    // 180 persistent cosmic background stars
+    const starCount = 180;
+    const stars = [];
+    for (let i = 0; i < starCount; i++) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.6 + 0.4,
+        alpha: Math.random() * 0.75 + 0.25,
+        twinkleSpeed: Math.random() * 0.025 + 0.008,
+        twinklePhase: Math.random() * Math.PI * 2,
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: (Math.random() - 0.5) * 0.12,
+        color:
+          Math.random() > 0.88
+            ? "rgba(244, 63, 94," // pink star
+            : Math.random() > 0.75
+            ? "rgba(56, 189, 248," // cyan star
+            : Math.random() > 0.6
+            ? "rgba(192, 132, 252," // lavender star
+            : "rgba(255, 255, 255,", // pure white star
+      });
+    }
 
     const onResize = () => {
       width = canvas.width = window.innerWidth;
@@ -252,15 +276,15 @@ export default function Home() {
 
     const particles = [];
     const addParticle = (x, y) => {
-      if (particles.length > 60) particles.shift();
+      if (particles.length > 45) particles.shift();
       const isCyan = Math.random() > 0.5;
       particles.push({
-        x: x + (Math.random() - 0.5) * 10,
-        y: y + (Math.random() - 0.5) * 10,
-        vx: (Math.random() - 0.5) * 1.5,
-        vy: (Math.random() - 0.5) * 1.5 - 0.3,
-        size: Math.random() * 2.5 + 1,
-        color: isCyan ? "rgba(56, 189, 248," : "rgba(192, 132, 252,",
+        x: x + (Math.random() - 0.5) * 8,
+        y: y + (Math.random() - 0.5) * 8,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: (Math.random() - 0.5) * 1.2 - 0.2,
+        size: Math.random() * 2.2 + 1,
+        color: isCyan ? "rgba(56, 189, 248," : "rgba(236, 72, 153,",
         life: 1.0,
         decay: Math.random() * 0.02 + 0.015,
       });
@@ -272,8 +296,37 @@ export default function Home() {
     window.addEventListener("mousemove", onMouseMove);
 
     let animId;
+    let t = 0;
     const render = () => {
       ctx.clearRect(0, 0, width, height);
+      t += 0.015;
+
+      // Render persistent twinkling background stars
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        if (s.x < 0) s.x = width;
+        if (s.x > width) s.x = 0;
+        if (s.y < 0) s.y = height;
+        if (s.y > height) s.y = 0;
+
+        const currentAlpha =
+          s.alpha * (0.55 + 0.45 * Math.sin(t * s.twinkleSpeed * 100 + s.twinklePhase));
+
+        ctx.save();
+        ctx.fillStyle = s.color + currentAlpha + ")";
+        if (s.radius > 1.2) {
+          ctx.shadowBlur = 5;
+          ctx.shadowColor = s.color + "0.75)";
+        }
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Render cursor particle trail
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         p.x += p.vx;
@@ -591,42 +644,7 @@ export default function Home() {
 
       {/* Main Content Area */}
       <div className="chat-container">
-        {/* Black Hole Header Hero (Shown when no messages) */}
-        {currentChat.messages.length === 0 && !streamingText && (
-          <div className="blackhole-container">
-            <div
-              className="blackhole-wrapper"
-              style={{
-                transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-              }}
-            >
-              <div className="blackhole-glow" />
-              <div className="blackhole-accretion" />
-              <div className="blackhole-ring-1" />
-              <div className="blackhole-ring-2" />
-              <div className="blackhole-event-horizon" />
-            </div>
-
-            <h1 className="brand-title">Stuverse AI</h1>
-            <p className="brand-subtitle">Your Personal AI Teacher &bull; Ask Doubts &bull; Learn with Confidence</p>
-
-            <div className="feature-pills-row">
-              <span className="feature-pill">⚡ Instant Solutions</span>
-              <span className="feature-pill">📖 Clear Explanations</span>
-              <span className="feature-pill">📸 Photo & PDF Doubts</span>
-              <span className="feature-pill">🎓 Built for Students</span>
-            </div>
-
-            {/* Suggestions Chips */}
-            <div className="suggestions-grid">
-              {SUGGESTIONS.map((item, idx) => (
-                <button key={idx} className="suggestion-chip" onClick={() => handleSend(item.prompt)}>
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+        
 
         {/* Existing Messages (PURE TEXT ONLY, ZERO BOXES) */}
         {currentChat.messages.map((msg, i) => (

@@ -1,5 +1,8 @@
 "use client";
 
+import { marked } from "marked";
+import katex from "katex";
+
 import { useState, useEffect, useRef } from "react";
 import {
   Paperclip,
@@ -131,6 +134,42 @@ function OctagramSymbol({ size = 28, isThinking = false, className = "" }) {
       </svg>
     </div>
   );
+}
+
+
+// Configure marked for clean GFM markdown
+marked.setOptions({
+  breaks: true,
+  gfm: true,
+});
+
+function renderMarkdownWithMath(rawText) {
+  if (!rawText) return "";
+
+  // 1. Process block math: $$ formula $$
+  let processed = rawText.replace(/\$\$([\s\S]*?)\$\$/g, (match, formula) => {
+    try {
+      return `<div class="katex-display-block">${katex.renderToString(formula.trim(), { displayMode: true, throwOnError: false })}</div>`;
+    } catch {
+      return match;
+    }
+  });
+
+  // 2. Process inline math: $ formula $
+  processed = processed.replace(/(?<!\\|\$)\$([^\$\n]+?)\$(?!\$)/g, (match, formula) => {
+    try {
+      return katex.renderToString(formula.trim(), { displayMode: false, throwOnError: false });
+    } catch {
+      return match;
+    }
+  });
+
+  // 3. Render markdown to clean HTML
+  try {
+    return marked.parse(processed);
+  } catch {
+    return rawText;
+  }
 }
 
 export default function Home() {
@@ -608,9 +647,10 @@ export default function Home() {
                     </span>
                   </div>
                 )}
-                <div className="markdown-body" style={{ whiteSpace: "pre-wrap" }}>
-                  {msg.text}
-                </div>
+                <div
+                  className="markdown-body"
+                  dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(msg.text) }}
+                />
               </div>
             </div>
           </div>
@@ -640,8 +680,11 @@ export default function Home() {
                 <OctagramSymbol size={28} isThinking={true} />
               </div>
               <div className="message-text">
-                <div className="markdown-body" style={{ whiteSpace: "pre-wrap" }}>
-                  {streamingText}
+                <div className="streaming-content-wrapper">
+                  <div
+                    className="markdown-body streaming-active"
+                    dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(streamingText) }}
+                  />
                   <span className="typing-cursor" />
                 </div>
               </div>

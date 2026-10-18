@@ -373,13 +373,25 @@ html {{
 [data-testid="stChatInput"] textarea::placeholder {{
     color: #64748b !important;
 }}
+/* Attachment button (paperclip) inside typing bar */
 [data-testid="stChatInput"] button {{
     border-radius: 50% !important;
-    background: #7c3aed !important;
-    color: #ffffff !important;
-    transition: transform 0.15s ease, background 0.15s ease !important;
+    background: transparent !important;
+    color: #94a3b8 !important;
+    transition: transform 0.15s ease, color 0.15s ease, background 0.15s ease !important;
 }}
 [data-testid="stChatInput"] button:hover {{
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    transform: scale(1.08) !important;
+}}
+
+/* Submit/Send button specific accent */
+[data-testid="stChatInputSubmitButton"] button {{
+    background: #7c3aed !important;
+    color: #ffffff !important;
+}}
+[data-testid="stChatInputSubmitButton"] button:hover {{
     background: #9333ea !important;
     transform: scale(1.06) !important;
 }}
@@ -833,30 +845,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ---------- File Upload (Doubts & Notes) ----------
-with st.expander("📎 **Upload Study Material / Question Photo**", expanded=False):
-    uploaded_file = st.file_uploader(
-        "Upload a photo of your textbook question, handwritten notes, or a PDF:",
-        type=["png", "jpg", "jpeg", "webp", "pdf", "txt", "md"],
-        help="Upload photos of doubts, question papers, or PDF lecture notes for step-by-step solutions",
-        key="file_uploader",
-    )
-    if uploaded_file is not None:
-        file_mime = uploaded_file.type
-        file_name = uploaded_file.name
-        file_size_kb = len(uploaded_file.getvalue()) / 1024
-        col_f1, col_f2 = st.columns([0.45, 0.55])
-        with col_f1:
-            if file_mime.startswith("image/"):
-                st.image(uploaded_file, caption=f"📸 {file_name} ({file_size_kb:.1f} KB)", use_container_width=True)
-            else:
-                st.info(f"📄 **{file_name}** ({file_size_kb:.1f} KB)")
-        with col_f2:
-            st.markdown("**Quick Actions:**")
-            col_q1, col_q2 = st.columns(2)
-            solve_btn = col_q1.button("📐 Solve Step-by-Step", use_container_width=True)
-            summary_btn = col_q2.button("📝 Create Summary", use_container_width=True)
-
 # ---------- Render Existing Messages ----------
 messages = current_chat.get("messages", [])
 for msg in messages:
@@ -873,7 +861,7 @@ for msg in messages:
 
 # ---------- Suggestion Pills ----------
 selected_prompt = None
-if not messages and uploaded_file is None:
+if not messages:
     st.markdown("##### 💡 Try asking:")
     chips = list(SUGGESTIONS.keys())
     cols = st.columns(len(chips))
@@ -881,16 +869,32 @@ if not messages and uploaded_file is None:
         if cols[i].button(chip_text, key=f"chip_{i}", use_container_width=True):
             selected_prompt = SUGGESTIONS[chip_text]
 
-if uploaded_file is not None:
-    if 'solve_btn' in locals() and solve_btn:
-        selected_prompt = "Please solve the question in this uploaded image/document step by step and explain it in detail."
-    elif 'summary_btn' in locals() and summary_btn:
-        selected_prompt = "Please create a comprehensive summary with the main bullet points from this uploaded file."
-
+# ---------- Chat Input with File Attachment (directly inside typing bar) ----------
 user_input = st.chat_input(
-    "Type your doubt or question here..." if uploaded_file is None else f"📎 What would you like to ask about '{uploaded_file.name}'?",
+    "Type your doubt or attach textbook photos / notes...",
+    accept_file=True,
+    file_type=["png", "jpg", "jpeg", "webp", "pdf", "txt", "md"],
 )
-active_prompt = selected_prompt or user_input
+
+active_prompt = None
+attached_file = None
+
+if user_input:
+    # Support both modern Streamlit ChatInputValue and fallback str
+    if hasattr(user_input, "text"):
+        active_prompt = user_input.text.strip() if user_input.text else ""
+        files = getattr(user_input, "files", [])
+        if files:
+            attached_file = files[0]
+    elif isinstance(user_input, str):
+        active_prompt = user_input.strip()
+
+    # If the student attached a file without typing text
+    if attached_file and not active_prompt:
+        active_prompt = f"Please explain and solve the problem in this attached file ({attached_file.name}) step by step."
+
+elif selected_prompt:
+    active_prompt = selected_prompt
 
 # ---------- Handle Question & AI Response ----------
 if active_prompt:
@@ -901,10 +905,10 @@ if active_prompt:
     file_part = None
     file_display_name = None
 
-    if uploaded_file is not None:
-        file_bytes = uploaded_file.getvalue()
-        file_mime = uploaded_file.type
-        file_display_name = uploaded_file.name
+    if attached_file is not None:
+        file_bytes = attached_file.getvalue()
+        file_mime = attached_file.type
+        file_display_name = attached_file.name
         if file_mime.startswith("image/"):
             file_part = types.Part.from_bytes(data=file_bytes, mime_type=file_mime)
         elif file_mime == "application/pdf":

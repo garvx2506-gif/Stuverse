@@ -29,11 +29,10 @@ stars_l = ", ".join(f"{rng.randint(1,2500)}px {rng.randint(1,2500)}px rgba(56,18
 # ---------- Cosmic CSS & 3D Styling ----------
 st.markdown(f"""
 <style>
-/* ===== GLOBAL MINIMALIST OBSIDIAN BLACK THEME ===== */
+/* ===== GLOBAL OLED PURE BLACK THEME ===== */
 [data-testid="stApp"] {{
-    background: radial-gradient(ellipse at 50% 12%, rgba(28, 20, 50, 0.4) 0%, #08070c 55%, #030205 100%) !important;
-    background-attachment: fixed;
-    color: #f1f5f9;
+    background: #000000 !important;
+    color: #f8fafc !important;
     overflow-x: hidden;
 }}
 
@@ -42,11 +41,11 @@ html {{
     scroll-behavior: smooth;
 }}
 
-/* Sidebar cosmic styling */
+/* Sidebar pure black styling */
 [data-testid="stSidebar"] {{
-    background: rgba(8, 4, 22, 0.92) !important;
+    background: #000000 !important;
     backdrop-filter: blur(14px);
-    border-right: 1px solid rgba(139, 92, 246, 0.2) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
 }}
 
 /* Star layers */
@@ -351,19 +350,19 @@ html {{
     margin: 0 auto !important;
 }}
 
-/* Single sleek classical pill bar in black theme */
+/* Single sleek classical pill bar in pure black theme */
 [data-testid="stChatInput"] > div {{
-    background: rgba(14, 12, 20, 0.94) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    background: #000000 !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
     border-radius: 30px !important;
-    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.75) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 1) !important;
     backdrop-filter: blur(24px) !important;
     transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
     padding: 4px 12px !important;
 }}
 [data-testid="stChatInput"] > div:focus-within {{
-    border-color: rgba(168, 85, 247, 0.55) !important;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85), 0 0 16px rgba(168, 85, 247, 0.18) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 12px 45px rgba(0, 0, 0, 1), 0 0 16px rgba(255, 255, 255, 0.08) !important;
 }}
 [data-testid="stChatInput"] textarea {{
     color: #f8fafc !important;

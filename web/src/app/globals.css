@@ -343,9 +343,202 @@ body {
 }
 
 .avatar.assistant {
-  background: rgba(56, 189, 248, 0.18);
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  color: #bae6fd;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== OCTAGRAM 8-POINTED STAR ANIMATION (IN THEN OUT) ===== */
+.octagram-symbol-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.octagram-svg {
+  transform-origin: 50% 50%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible;
+}
+
+/* Outer sides going in then out, in then out */
+.octagram-svg.pulse-in-out {
+  animation: octagramInOut 1.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+@keyframes octagramInOut {
+  0% {
+    /* Resting */
+    transform: scale(0.68) rotate(0deg);
+    filter: drop-shadow(0 0 3px rgba(244, 63, 94, 0.45));
+  }
+  18% {
+    /* FIRST BEAT - IN (Tips contract deeply towards center) */
+    transform: scale(0.42) rotate(12deg);
+    filter: drop-shadow(0 0 2px rgba(244, 63, 94, 0.3));
+  }
+  38% {
+    /* FIRST BEAT - OUT (Tips shoot outward with radiant burst) */
+    transform: scale(1.30) rotate(22.5deg);
+    filter: drop-shadow(0 0 16px rgba(244, 63, 94, 1)) drop-shadow(0 0 26px rgba(236, 72, 153, 0.75));
+  }
+  56% {
+    /* SECOND BEAT - IN (Tips pull inward again) */
+    transform: scale(0.48) rotate(34deg);
+    filter: drop-shadow(0 0 3px rgba(244, 63, 94, 0.35));
+  }
+  76% {
+    /* SECOND BEAT - OUT (Tips spring outward again) */
+    transform: scale(1.22) rotate(45deg);
+    filter: drop-shadow(0 0 14px rgba(244, 63, 94, 0.95)) drop-shadow(0 0 22px rgba(168, 85, 247, 0.65));
+  }
+  92% {
+    /* Return to resting */
+    transform: scale(0.70) rotate(0deg);
+    filter: drop-shadow(0 0 4px rgba(244, 63, 94, 0.45));
+  }
+  100% {
+    transform: scale(0.68) rotate(0deg);
+    filter: drop-shadow(0 0 3px rgba(244, 63, 94, 0.45));
+  }
+}
+
+/* Star path stroke flowing illumination */
+.octagram-svg.pulse-in-out .octagram-path {
+  stroke-dasharray: 480;
+  animation: octagramStrokeDraw 1.5s ease-in-out infinite;
+}
+
+@keyframes octagramStrokeDraw {
+  0% {
+    stroke-dashoffset: 0;
+    stroke: #f43f5e;
+  }
+  50% {
+    stroke-dashoffset: 240;
+    stroke: #fb7185;
+  }
+  100% {
+    stroke-dashoffset: 480;
+    stroke: #f43f5e;
+  }
+}
+
+/* 8 Outer Pink Tip Dots Pulsing & Glowing */
+.octagram-svg.pulse-in-out .octagram-tip-dot {
+  animation: octagramDotBeat 1.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  transform-origin: center;
+}
+
+@keyframes octagramDotBeat {
+  0%, 18%, 56%, 100% {
+    r: 3.2;
+    fill: #f43f5e;
+    stroke: rgba(255, 255, 255, 0.8);
+  }
+  38%, 76% {
+    r: 4.8;
+    fill: #ffffff;
+    stroke: #f43f5e;
+    stroke-width: 1.5;
+  }
+}
+
+/* Cosmic Ripple Ring behind the Octagram */
+.octagram-ripple-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  margin-top: -16px;
+  margin-left: -16px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(244, 63, 94, 0.6);
+  pointer-events: none;
+  animation: octagramRippleBeat 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+@keyframes octagramRippleBeat {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(0.4);
+    opacity: 0.8;
+  }
+  42% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  58% {
+    transform: scale(0.4);
+    opacity: 0.7;
+  }
+  80% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+
+.octagram-halo-spin {
+  transform-origin: 50% 50%;
+  animation: haloSpin 6s linear infinite;
+}
+
+@keyframes haloSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Corner Thinking Indicator (exact corner where typing starts) */
+.thinking-active-row {
+  margin-bottom: 0.5rem;
+}
+
+.thinking-corner-symbol {
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+.thinking-corner-box {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0;
+}
+
+.thinking-text {
+  background: linear-gradient(90deg, #f43f5e, #fb7185, #c084fc, #38bdf8);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 0.96rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  animation: thinkingShimmer 2s linear infinite;
+}
+
+@keyframes thinkingShimmer {
+  0% {
+    background-position: 0% 50%;
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 200% 50%;
+    opacity: 0.6;
+  }
 }
 
 .message-text {

@@ -44,6 +44,95 @@ const SUGGESTIONS = [
   { label: "🌿 Photosynthesis", prompt: "Explain the process of photosynthesis step by step in simple language." },
 ];
 
+// Exact 8-pointed star (Octagram {8/3}) with outer pink tip dots that pulses "in then out, in then out"
+function OctagramSymbol({ size = 28, isThinking = false, className = "" }) {
+  const points = [
+    [50, 6],
+    [81.1, 18.9],
+    [94, 50],
+    [81.1, 81.1],
+    [50, 94],
+    [18.9, 81.1],
+    [6, 50],
+    [18.9, 18.9],
+  ];
+
+  return (
+    <div
+      className={`octagram-symbol-wrapper ${isThinking ? "is-thinking" : ""} ${className}`}
+      style={{
+        width: size,
+        height: size,
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+      }}
+    >
+      {/* Outer cosmic ripple ring when thinking */}
+      {isThinking && <div className="octagram-ripple-ring" />}
+
+      <svg
+        viewBox="0 0 100 100"
+        width={size}
+        height={size}
+        className={`octagram-svg ${isThinking ? "pulse-in-out" : ""}`}
+        style={{ overflow: "visible" }}
+      >
+        {isThinking && (
+          <circle
+            cx="50"
+            cy="50"
+            r="46"
+            fill="none"
+            stroke="rgba(244, 63, 94, 0.35)"
+            strokeWidth="1.5"
+            strokeDasharray="4 6"
+            className="octagram-halo-spin"
+          />
+        )}
+
+        {/* 8/3 Octagram Star Path */}
+        <path
+          d="M 50 6 L 81.1 81.1 L 6 50 L 81.1 18.9 L 50 94 L 18.9 18.9 L 94 50 L 18.9 81.1 Z"
+          fill={isThinking ? "rgba(244, 63, 94, 0.12)" : "rgba(236, 72, 153, 0.08)"}
+          stroke="#f43f5e"
+          strokeWidth="2.8"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          className="octagram-path"
+        />
+
+        {/* Inner geometric diamond cross */}
+        <polygon
+          points="50,22 78,50 50,78 22,50"
+          fill="none"
+          stroke="rgba(236, 72, 153, 0.55)"
+          strokeWidth="1.5"
+          className="octagram-inner-ring"
+        />
+
+        {/* 8 Pink circular dots at the outer tips (identical to user screenshot) */}
+        {points.map(([px, py], idx) => (
+          <circle
+            key={idx}
+            cx={px}
+            cy={py}
+            r="3.8"
+            fill="#f43f5e"
+            stroke="#ffffff"
+            strokeWidth="1.2"
+            className="octagram-tip-dot"
+          />
+        ))}
+
+        {/* Central glowing bindu dot */}
+        <circle cx="50" cy="50" r="3.2" fill="#ffffff" />
+      </svg>
+    </div>
+  );
+}
+
 export default function Home() {
   const [chats, setChats] = useState({});
   const [currentChatId, setCurrentChatId] = useState(null);
@@ -505,7 +594,11 @@ export default function Home() {
           <div key={i} className={`message-row ${msg.role}`}>
             <div className="message-content-wrapper">
               <div className={`avatar ${msg.role}`}>
-                {msg.role === "user" ? "🧑‍🎓" : "🤖"}
+                {msg.role === "user" ? (
+                  "🧑‍🎓"
+                ) : (
+                  <OctagramSymbol size={26} isThinking={false} />
+                )}
               </div>
               <div className="message-text">
                 {msg.fileName && (
@@ -523,11 +616,29 @@ export default function Home() {
           </div>
         ))}
 
+        {/* Thinking Indicator (Octagram Star on left corner going in then out) */}
+        {isGenerating && !streamingText && (
+          <div className="message-row assistant thinking-active-row">
+            <div className="message-content-wrapper">
+              <div className="avatar assistant thinking-corner-symbol">
+                <OctagramSymbol size={30} isThinking={true} />
+              </div>
+              <div className="message-text">
+                <div className="thinking-corner-box">
+                  <span className="thinking-text">Thinking...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Live Streaming Message */}
         {streamingText && (
           <div className="message-row assistant">
             <div className="message-content-wrapper">
-              <div className="avatar assistant">🤖</div>
+              <div className="avatar assistant">
+                <OctagramSymbol size={28} isThinking={true} />
+              </div>
               <div className="message-text">
                 <div className="markdown-body" style={{ whiteSpace: "pre-wrap" }}>
                   {streamingText}

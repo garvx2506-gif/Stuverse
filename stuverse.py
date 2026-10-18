@@ -320,6 +320,124 @@ html {{
     line-height: 1.75 !important;
 }}
 
+
+/* ===== OCTAGRAM 8-POINTED STAR THINKING ANIMATION (IN THEN OUT) ===== */
+.octagram-thinking-corner {{
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    position: relative !important;
+    margin: 4px 0 10px 0 !important;
+    padding: 4px 0 !important;
+}}
+
+.octagram-svg-pulse {{
+    transform-origin: 50% 50% !important;
+    animation: octagramStreamlitInOut 1.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite !important;
+    overflow: visible !important;
+}}
+
+@keyframes octagramStreamlitInOut {{
+    0% {{
+        transform: scale(0.68) rotate(0deg);
+        filter: drop-shadow(0 0 3px rgba(244, 63, 94, 0.45));
+    }}
+    18% {{
+        transform: scale(0.42) rotate(12deg);
+        filter: drop-shadow(0 0 2px rgba(244, 63, 94, 0.3));
+    }}
+    38% {{
+        transform: scale(1.30) rotate(22.5deg);
+        filter: drop-shadow(0 0 16px rgba(244, 63, 94, 1)) drop-shadow(0 0 26px rgba(236, 72, 153, 0.75));
+    }}
+    56% {{
+        transform: scale(0.48) rotate(34deg);
+        filter: drop-shadow(0 0 3px rgba(244, 63, 94, 0.35));
+    }}
+    76% {{
+        transform: scale(1.22) rotate(45deg);
+        filter: drop-shadow(0 0 14px rgba(244, 63, 94, 0.95)) drop-shadow(0 0 22px rgba(168, 85, 247, 0.65));
+    }}
+    92% {{
+        transform: scale(0.70) rotate(0deg);
+        filter: drop-shadow(0 0 4px rgba(244, 63, 94, 0.45));
+    }}
+    100% {{
+        transform: scale(0.68) rotate(0deg);
+        filter: drop-shadow(0 0 3px rgba(244, 63, 94, 0.45));
+    }}
+}}
+
+.octagram-ripple-ring {{
+    position: absolute !important;
+    top: 50% !important;
+    left: 15px !important;
+    width: 30px !important;
+    height: 30px !important;
+    margin-top: -15px !important;
+    margin-left: -15px !important;
+    border-radius: 50% !important;
+    border: 1.5px solid rgba(244, 63, 94, 0.6) !important;
+    pointer-events: none !important;
+    animation: octagramRippleRing 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) infinite !important;
+}}
+
+@keyframes octagramRippleRing {{
+    0% {{ transform: scale(0.4); opacity: 0; }}
+    20% {{ transform: scale(0.4); opacity: 0.8; }}
+    42% {{ transform: scale(1.6); opacity: 0; }}
+    58% {{ transform: scale(0.4); opacity: 0.7; }}
+    80% {{ transform: scale(1.5); opacity: 0; }}
+    100% {{ transform: scale(0.4); opacity: 0; }}
+}}
+
+.octagram-path-glow {{
+    stroke-dasharray: 480;
+    animation: octagramStrokeGlow 1.5s ease-in-out infinite;
+}}
+
+@keyframes octagramStrokeGlow {{
+    0% {{ stroke-dashoffset: 0; stroke: #f43f5e; }}
+    50% {{ stroke-dashoffset: 240; stroke: #fb7185; }}
+    100% {{ stroke-dashoffset: 480; stroke: #f43f5e; }}
+}}
+
+.octagram-dot-pulse {{
+    animation: octagramDotPulse 1.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}}
+
+@keyframes octagramDotPulse {{
+    0%, 18%, 56%, 100% {{ r: 3.2; fill: #f43f5e; }}
+    38%, 76% {{ r: 4.8; fill: #ffffff; stroke: #f43f5e; }}
+}}
+
+.octagram-halo-spin {{
+    transform-origin: 50% 50%;
+    animation: haloSpinST 6s linear infinite;
+}}
+
+@keyframes haloSpinST {{
+    from {{ transform: rotate(0deg); }}
+    to {{ transform: rotate(360deg); }}
+}}
+
+.thinking-text-glow {{
+    background: linear-gradient(90deg, #f43f5e, #fb7185, #c084fc, #38bdf8) !important;
+    background-size: 200% auto !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    font-size: 0.98rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.02em !important;
+    animation: textShimmer 2s linear infinite !important;
+}}
+
+@keyframes textShimmer {{
+    0% {{ background-position: 0% 50%; opacity: 0.6; }}
+    50% {{ opacity: 1; }}
+    100% {{ background-position: 200% 50%; opacity: 0.6; }}
+}}
+
 /* Hidden zero-height layout markers */
 .sender-msg-marker, .receiver-msg-marker {{
     display: none !important;
@@ -816,6 +934,41 @@ Teaching Rules:
 """
 
 # ---------- Fast Word-by-Word Typing Animation Generator ----------
+
+# ---------- Exact 8-Pointed Star (Octagram {8/3}) with Pink Tip Dots ----------
+OCTAGRAM_SVG_STATIC = """<svg viewBox="0 0 100 100" width="28" height="28" style="overflow: visible; display: inline-block; vertical-align: middle;">
+  <path d="M 50 6 L 81.1 81.1 L 6 50 L 81.1 18.9 L 50 94 L 18.9 18.9 L 94 50 L 18.9 81.1 Z" fill="rgba(236, 72, 153, 0.08)" stroke="#f43f5e" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+  <polygon points="50,22 78,50 50,78 22,50" fill="none" stroke="rgba(236, 72, 153, 0.55)" stroke-width="1.5"/>
+  <circle cx="50" cy="6" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="81.1" cy="18.9" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="94" cy="50" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="81.1" cy="81.1" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="50" cy="94" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="18.9" cy="81.1" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="6" cy="50" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="18.9" cy="18.9" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="50" cy="50" r="3.2" fill="#ffffff"/>
+</svg>"""
+
+OCTAGRAM_SVG_THINKING = """<div class="octagram-thinking-corner">
+  <div class="octagram-ripple-ring"></div>
+  <svg class="octagram-svg-pulse" viewBox="0 0 100 100" width="30" height="30" style="overflow: visible;">
+    <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(244, 63, 94, 0.35)" stroke-width="1.5" stroke-dasharray="4 6" class="octagram-halo-spin"/>
+    <path d="M 50 6 L 81.1 81.1 L 6 50 L 81.1 18.9 L 50 94 L 18.9 18.9 L 94 50 L 18.9 81.1 Z" fill="rgba(244, 63, 94, 0.12)" stroke="#f43f5e" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round" class="octagram-path-glow"/>
+    <polygon points="50,22 78,50 50,78 22,50" fill="none" stroke="rgba(236, 72, 153, 0.55)" stroke-width="1.5"/>
+    <circle cx="50" cy="6" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2" class="octagram-dot-pulse"/>
+    <circle cx="81.1" cy="18.9" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2" class="octagram-dot-pulse"/>
+    <circle cx="94" cy="50" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2" class="octagram-dot-pulse"/>
+    <circle cx="81.1" cy="81.1" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2" class="octagram-dot-pulse"/>
+    <circle cx="50" cy="94" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2" class="octagram-dot-pulse"/>
+    <circle cx="18.9" cy="81.1" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2" class="octagram-dot-pulse"/>
+    <circle cx="6" cy="50" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2" class="octagram-dot-pulse"/>
+    <circle cx="18.9" cy="18.9" r="3.8" fill="#f43f5e" stroke="#ffffff" stroke-width="1.2" class="octagram-dot-pulse"/>
+    <circle cx="50" cy="50" r="3.2" fill="#ffffff"/>
+  </svg>
+  <span class="thinking-text-glow">Thinking...</span>
+</div>"""
+
 def stream_words(text, words_per_chunk=1, delay=0.012):
     """Yields text word-by-word with a fast typing stream animation."""
     words = text.split(" ")
@@ -935,36 +1088,35 @@ if active_prompt:
 
     with st.chat_message("assistant"):
         st.markdown('<div class="receiver-msg-marker"></div>', unsafe_allow_html=True)
+        thinking_slot = st.empty()
+        thinking_slot.markdown(OCTAGRAM_SVG_THINKING, unsafe_allow_html=True)
         answer = None
         ok = False
 
-        with st.status("🧠 Stuverse AI is thinking...", expanded=False) as status:
-            for attempt in range(3):
-                try:
-                    response = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents=gemini_contents,
-                        config=types.GenerateContentConfig(
-                            system_instruction=TEACHER_PROMPT,
-                        ),
-                    )
-                    answer = response.text
-                    if answer:
-                        ok = True
-                    else:
-                        answer = "The AI returned an empty response. Please try asking again."
+        for attempt in range(3):
+            try:
+                response = client.models.generate_content(
+                    model=MODEL_NAME,
+                    contents=gemini_contents,
+                    config=types.GenerateContentConfig(
+                        system_instruction=TEACHER_PROMPT,
+                    ),
+                )
+                answer = response.text
+                if answer:
+                    ok = True
+                else:
+                    answer = "The AI returned an empty response. Please try asking again."
+                break
+            except Exception as e:
+                err_msg = str(e)
+                if "503" in err_msg and attempt < 2:
+                    time.sleep(2)
+                else:
+                    answer = f"Sorry, a technical error occurred: {err_msg}"
                     break
-                except Exception as e:
-                    err_msg = str(e)
-                    if "503" in err_msg and attempt < 2:
-                        time.sleep(2)
-                    else:
-                        answer = f"Sorry, a technical error occurred: {err_msg}"
-                        break
-            status.update(
-                label="Ready!" if ok else "Error",
-                state="complete" if ok else "error",
-            )
+
+        thinking_slot.empty()
 
         # Word-by-word fast typing animation
         if ok:

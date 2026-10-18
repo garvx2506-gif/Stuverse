@@ -137,6 +137,141 @@ function OctagramSymbol({ size = 28, isThinking = false, className = "" }) {
 }
 
 
+// Artistic Dolphin with a glowing Blue Paintbrush Symbol
+function DolphinBrushSymbol({ size = 46, className = "" }) {
+  return (
+    <div
+      className={`dolphin-brush-wrapper ${className}`}
+      style={{
+        width: size,
+        height: size,
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+        flexShrink: 0,
+      }}
+    >
+      <svg
+        viewBox="0 0 100 100"
+        width={size}
+        height={size}
+        style={{ overflow: "visible" }}
+      >
+        <defs>
+          {/* Blue Paint Glow Gradient */}
+          <linearGradient id="blueBrushPaint" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#38bdf8" />
+            <stop offset="50%" stopColor="#0ea5e9" />
+            <stop offset="100%" stopColor="#0284c7" />
+          </linearGradient>
+
+          {/* Dolphin Body Gradient */}
+          <linearGradient id="dolphinBodyGrad" x1="10%" y1="0%" x2="90%" y2="100%">
+            <stop offset="0%" stopColor="#f0f9ff" />
+            <stop offset="35%" stopColor="#7dd3fc" />
+            <stop offset="100%" stopColor="#0369a1" />
+          </linearGradient>
+
+          {/* Belly Gradient */}
+          <linearGradient id="dolphinBellyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
+            <stop offset="100%" stopColor="#bae6fd" stopOpacity="0.65" />
+          </linearGradient>
+
+          {/* Brush Handle Gradient */}
+          <linearGradient id="woodHandleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#fbbf24" />
+            <stop offset="50%" stopColor="#d97706" />
+            <stop offset="100%" stopColor="#78350f" />
+          </linearGradient>
+        </defs>
+
+        {/* Dynamic Glowing Blue Paint Splash Wave */}
+        <path
+          d="M 12 78 C 30 89, 66 86, 92 68 C 76 80, 42 86, 18 80 Z"
+          fill="url(#blueBrushPaint)"
+          filter="drop-shadow(0 0 10px rgba(56, 189, 248, 0.85))"
+        />
+        <path
+          d="M 20 74 C 38 82, 65 79, 88 65"
+          fill="none"
+          stroke="#a5f3fc"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          opacity="0.85"
+        />
+
+        {/* Leaping Dolphin Body */}
+        <path
+          d="M 26 63 C 20 53, 23 37, 39 26 C 55 16, 75 22, 85 36 C 89 42, 89 48, 84 50 C 78 52, 70 42, 58 40 C 44 38, 31 51, 26 63 Z"
+          fill="url(#dolphinBodyGrad)"
+          filter="drop-shadow(0 0 5px rgba(56, 189, 248, 0.4))"
+        />
+
+        {/* Dolphin Underbelly */}
+        <path
+          d="M 30 59 C 35 48, 46 41, 58 41 C 67 41, 74 46, 81 48 C 76 52, 65 52, 54 53 C 42 54, 34 57, 30 59 Z"
+          fill="url(#dolphinBellyGrad)"
+        />
+
+        {/* Dolphin Snout */}
+        <path
+          d="M 85 36 C 92 37, 96 39, 95 43 C 94 46, 88 47, 83 45 Z"
+          fill="#38bdf8"
+        />
+
+        {/* Dolphin Eye with twinkle */}
+        <circle cx="78" cy="34" r="2.2" fill="#0f172a" />
+        <circle cx="78.8" cy="33.4" r="0.9" fill="#ffffff" />
+
+        {/* Dorsal Fin */}
+        <path
+          d="M 52 23 C 54 13, 61 11, 66 16 C 62 20, 60 23, 58 24 Z"
+          fill="#0284c7"
+        />
+
+        {/* Pectoral Flipper */}
+        <path
+          d="M 57 46 C 62 55, 68 60, 64 62 C 60 63, 56 56, 53 48 Z"
+          fill="#0369a1"
+        />
+
+        {/* Tail Fluke */}
+        <path
+          d="M 26 63 C 22 67, 16 71, 10 69 C 12 65, 17 64, 19 60 C 15 58, 9 55, 10 50 C 16 53, 21 57, 26 63 Z"
+          fill="#0284c7"
+        />
+
+        {/* Artist's Paint Brush with Celestial Blue Paint */}
+        {/* Wooden Handle */}
+        <path
+          d="M 74 48 L 88 64 L 85 66 L 71 50 Z"
+          fill="url(#woodHandleGrad)"
+        />
+        {/* Silver Ferrule */}
+        <path
+          d="M 87 63 L 90 67 L 88 68 L 85 65 Z"
+          fill="#f1f5f9"
+        />
+        {/* Blue Paint Bristles */}
+        <path
+          d="M 89 66 C 94 71, 96 76, 92 78 C 88 78, 87 73, 86 68 Z"
+          fill="url(#blueBrushPaint)"
+          filter="drop-shadow(0 0 8px rgba(56, 189, 248, 1))"
+        />
+
+        {/* Glowing Paint Droplets & Sparkles */}
+        <circle cx="94" cy="80" r="2" fill="#38bdf8" filter="drop-shadow(0 0 4px #38bdf8)" />
+        <circle cx="89" cy="84" r="1.4" fill="#67e8f9" />
+        <circle cx="82" cy="83" r="1.2" fill="#bae6fd" />
+      </svg>
+    </div>
+  );
+}
+
+
+
 // Configure marked for clean GFM markdown
 marked.setOptions({
   breaks: true,
@@ -183,6 +318,7 @@ export default function Home() {
   const [streamingText, setStreamingText] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [greeting, setGreeting] = useState("Night hustle?");
 
   const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
@@ -217,6 +353,15 @@ export default function Home() {
       }
     }
   }, [chats]);
+
+  // Compute time-based greeting on client mount
+  useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour >= 21 || hour < 5) setGreeting("Night hustle?");
+    else if (hour >= 5 && hour < 12) setGreeting("Morning study?");
+    else if (hour >= 12 && hour < 17) setGreeting("Afternoon focus?");
+    else setGreeting("Evening hustle?");
+  }, []);
 
   // Auto-scroll chat
   useEffect(() => {
@@ -644,6 +789,73 @@ export default function Home() {
 
       {/* Main Content Area */}
       <div className="chat-container">
+        {/* Centered Front & Mid Initial View (When no messages exist yet) */}
+        {currentChat.messages.length === 0 && !streamingText && (
+          <div className="center-hero-view">
+            <div className="center-hero-badge">
+              <span>Free plan &bull; Gemini 2.5 Flash</span>
+            </div>
+
+            {/* Greeting with Dolphin + Blue Brush */}
+            <div className="greeting-container">
+              <DolphinBrushSymbol size={52} />
+              <h1 className="greeting-heading">{greeting}</h1>
+            </div>
+
+            {/* Center Front & Mid Typing Box (Claude-style) */}
+            <div className="center-input-card">
+              <textarea
+                ref={textareaRef}
+                className="center-input-textarea"
+                placeholder="How can I help you today?"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                rows={3}
+              />
+
+              {attachedFile && (
+                <div className="attached-file-chip">
+                  <Paperclip size={13} />
+                  <span className="file-name-trim">{attachedFile.name}</span>
+                  <button className="file-remove-x" onClick={() => setAttachedFile(null)}>×</button>
+                </div>
+              )}
+
+              <div className="center-card-bottom-row">
+                <div className="center-card-tools-left">
+                  <button
+                    className="icon-attach-btn"
+                    title="Attach notes / photos / PDF"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <Paperclip size={17} />
+                  </button>
+                  <button className="mode-pill-active">Chat</button>
+                  <button
+                    className="mode-pill-subtle"
+                    onClick={() => setSidebarOpen(true)}
+                    title="Change level or subject"
+                  >
+                    {level} &bull; {subject}
+                  </button>
+                </div>
+
+                <div className="center-card-tools-right">
+                  <span className="model-chip-tag">Sonnet-speed &bull; 2.5 Flash</span>
+                  <button
+                    className="center-submit-arrow"
+                    disabled={!input.trim() && !attachedFile}
+                    onClick={() => handleSend()}
+                    title="Send message"
+                  >
+                    <ArrowUp size={17} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         
 
         {/* Existing Messages (PURE TEXT ONLY, ZERO BOXES) */}
@@ -714,6 +926,7 @@ export default function Home() {
       </div>
 
       {/* Classical Floating Pill Typing Bar (ONLY THE BAR, NO OUTER BOXES) */}
+      {(currentChat.messages.length > 0 || streamingText) && (
       <div className="typing-bar-sticky-container">
         <div className="typing-bar-capsule">
           {/* Hidden File Input */}
@@ -769,6 +982,7 @@ export default function Home() {
           </button>
         </div>
       </div>
+      )}
     </main>
   );
 }

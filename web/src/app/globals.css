@@ -98,37 +98,7 @@ body {
   100% { opacity: 0.95; }
 }
 
-/* Shooting Stars */
-.shooting-star-1, .shooting-star-2 {
-  position: fixed;
-  width: 140px;
-  height: 1.5px;
-  background: linear-gradient(90deg, #ec4899, #38bdf8, transparent);
-  border-radius: 999px;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0;
-}
-.shooting-star-1 {
-  top: 18%;
-  left: -150px;
-  transform: rotate(-30deg);
-  animation: shootStar 7s ease-in 2s infinite;
-}
-.shooting-star-2 {
-  top: 45%;
-  left: -150px;
-  transform: rotate(-25deg);
-  animation: shootStar 11s ease-in 6s infinite;
-}
-
-@keyframes shootStar {
-  0% { left: -150px; opacity: 0; }
-  5% { opacity: 1; }
-  35% { opacity: 1; }
-  60% { left: 110%; opacity: 0; }
-  100% { left: 110%; opacity: 0; }
-}
+/* Shooting Stars removed */
 
 /* ===== 3D BLACK HOLE ANIMATION ===== */
 .blackhole-container {

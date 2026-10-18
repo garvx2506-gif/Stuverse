@@ -589,9 +589,6 @@ html {{
 <div id="cosmic-stars-3"></div>
 
 <!-- Shooting stars -->
-<div class="shooting-star"></div>
-<div class="shooting-star"></div>
-<div class="shooting-star"></div>
 """, unsafe_allow_html=True)
 
 # ---------- Interactive Cursor & Scroll Animation Component ----------

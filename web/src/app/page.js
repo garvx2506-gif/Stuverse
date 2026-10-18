@@ -678,9 +678,7 @@ export default function Home() {
       {/* Background Starfield & Shooting Stars */}
       <div className="stars-layer-1" />
       <div className="stars-layer-2" />
-      <div className="shooting-star-1" />
-      <div className="shooting-star-2" />
-
+            
       {/* Top Navigation */}
       <header className="top-nav">
         <button className="sidebar-toggle-btn" onClick={() => setSidebarOpen(true)} title="Open Sidebar">
@@ -792,9 +790,7 @@ export default function Home() {
         {/* Centered Front & Mid Initial View (When no messages exist yet) */}
         {currentChat.messages.length === 0 && !streamingText && (
           <div className="center-hero-view">
-            <div className="center-hero-badge">
-              <span>Free plan &bull; Gemini 2.5 Flash</span>
-            </div>
+
 
             {/* Greeting with Dolphin + Blue Brush */}
             <div className="greeting-container">
@@ -842,7 +838,7 @@ export default function Home() {
                 </div>
 
                 <div className="center-card-tools-right">
-                  <span className="model-chip-tag">Sonnet-speed &bull; 2.5 Flash</span>
+                  
                   <button
                     className="center-submit-arrow"
                     disabled={!input.trim() && !attachedFile}

@@ -29,11 +29,9 @@ stars_l = ", ".join(f"{rng.randint(1,2500)}px {rng.randint(1,2500)}px rgba(56,18
 # ---------- Cosmic CSS & 3D Styling ----------
 st.markdown(f"""
 <style>
-/* ===== GLOBAL COSMOS BACKGROUND ===== */
+/* ===== GLOBAL MINIMALIST OBSIDIAN BLACK THEME ===== */
 [data-testid="stApp"] {{
-    background: radial-gradient(ellipse at 15% 75%, rgba(109, 40, 217, 0.18) 0%, transparent 45%),
-                radial-gradient(ellipse at 85% 25%, rgba(14, 165, 233, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(15, 10, 30, 0.95) 0%, #050210 100%) !important;
+    background: radial-gradient(ellipse at 50% 12%, rgba(28, 20, 50, 0.4) 0%, #08070c 55%, #030205 100%) !important;
     background-attachment: fixed;
     color: #f1f5f9;
     overflow-x: hidden;
@@ -204,52 +202,58 @@ html {{
     letter-spacing: 0.3px;
 }}
 
-/* ===== 3D FEATURE PILLS ===== */
+/* ===== CLASSICAL FEATURE PILLS ===== */
 .feature-pill {{
     display: inline-block;
-    background: rgba(139, 92, 246, 0.12);
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    border-radius: 24px;
-    padding: 0.45rem 1.1rem;
-    margin: 0.25rem;
-    font-size: 0.88rem;
-    color: #e0e7ff;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 0.35rem 0.95rem;
+    margin: 0.2rem;
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    transition: all 0.25s ease;
     cursor: default;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
 }}
 .feature-pill:hover {{
-    background: rgba(139, 92, 246, 0.28);
-    border-color: rgba(192, 132, 252, 0.65);
-    transform: translateY(-3px) scale(1.04);
-    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.35);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(168, 85, 247, 0.45);
+    color: #ffffff;
+    transform: translateY(-1px);
 }}
 
-/* ===== 3D BUTTON & CARD EFFECTS ===== */
+/* ===== BUTTON EFFECTS ===== */
 .stButton > button {{
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition: all 0.25s ease !important;
     border-radius: 10px !important;
-    perspective: 600px;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #f1f5f9 !important;
 }}
 .stButton > button:hover {{
-    transform: translateY(-2px) scale(1.02) !important;
-    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3) !important;
-    border-color: rgba(192, 132, 252, 0.5) !important;
-}}
-.stButton > button:active {{
-    transform: translateY(0px) scale(0.98) !important;
+    transform: translateY(-1px) !important;
+    border-color: rgba(168, 85, 247, 0.5) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
 }}
 
-/* Chat messages 3D card lift & Alignment */
+/* ===== CHAT MESSAGES (PURE TEXT ONLY, ZERO BOXES) ===== */
 [data-testid="stChatMessage"] {{
-    animation: fadeSlideUp 0.35s ease-out;
-    border-radius: 18px !important;
-    transition: all 0.3s ease;
-    margin-bottom: 0.9rem !important;
+    animation: fadeSlideUp 0.3s ease-out;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0.85rem 0 !important;
+    margin-bottom: 0.4rem !important;
     display: flex !important;
 }}
+[data-testid="stChatMessage"]:hover {{
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}}
 
-/* SENDER / USER MESSAGE (ALIGNED TO RIGHT) */
+/* SENDER / USER MESSAGE (RIGHT SIDE - PURE TEXT, NO BOX) */
 [data-testid="stChatMessage"]:has(.sender-msg-marker),
 [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {{
     flex-direction: row-reverse !important;
@@ -257,61 +261,64 @@ html {{
     margin-right: 0 !important;
     width: fit-content !important;
     max-width: 82% !important;
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.45) 0%, rgba(99, 102, 241, 0.38) 100%) !important;
-    border: 1px solid rgba(168, 85, 247, 0.55) !important;
-    border-radius: 20px 20px 4px 20px !important;
-    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.28) !important;
-    backdrop-filter: blur(12px);
-}}
-[data-testid="stChatMessage"]:has(.sender-msg-marker):hover,
-[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]):hover {{
-    border-color: rgba(216, 180, 254, 0.7) !important;
-    box-shadow: 0 8px 28px rgba(168, 85, 247, 0.4) !important;
-    transform: translateY(-2px);
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }}
 [data-testid="stChatMessage"]:has(.sender-msg-marker) [data-testid="stChatMessageAvatar"],
 [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) [data-testid="stChatMessageAvatar"] {{
-    margin-left: 12px !important;
+    margin-left: 14px !important;
     margin-right: 0 !important;
+    background: rgba(139, 92, 246, 0.2) !important;
+    border: 1px solid rgba(168, 85, 247, 0.4) !important;
+    border-radius: 50% !important;
 }}
 [data-testid="stChatMessage"]:has(.sender-msg-marker) [data-testid="stChatMessageContent"],
 [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) [data-testid="stChatMessageContent"] {{
     text-align: right !important;
+    background: transparent !important;
 }}
 [data-testid="stChatMessage"]:has(.sender-msg-marker) p,
 [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) p {{
     text-align: right !important;
+    color: #e2e8f0 !important;
+    font-size: 1.05rem !important;
+    font-weight: 500 !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
 }}
 
-/* RECEIVER / AI ANSWER (ALIGNED TO LEFT) */
+/* RECEIVER / AI ANSWER (LEFT SIDE - PURE TEXT, NO BOX) */
 [data-testid="stChatMessage"]:has(.receiver-msg-marker),
 [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {{
     flex-direction: row !important;
     margin-right: auto !important;
     margin-left: 0 !important;
-    width: fit-content !important;
-    min-width: 55% !important;
-    max-width: 88% !important;
-    background: rgba(14, 9, 32, 0.85) !important;
-    border: 1px solid rgba(56, 189, 248, 0.35) !important;
-    border-radius: 20px 20px 20px 4px !important;
-    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15) !important;
-    backdrop-filter: blur(12px);
-}}
-[data-testid="stChatMessage"]:has(.receiver-msg-marker):hover,
-[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]):hover {{
-    border-color: rgba(56, 189, 248, 0.6) !important;
-    box-shadow: 0 8px 28px rgba(56, 189, 248, 0.25) !important;
-    transform: translateY(-2px);
+    width: 100% !important;
+    max-width: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }}
 [data-testid="stChatMessage"]:has(.receiver-msg-marker) [data-testid="stChatMessageAvatar"],
 [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) [data-testid="stChatMessageAvatar"] {{
-    margin-right: 12px !important;
+    margin-right: 14px !important;
     margin-left: 0 !important;
+    background: rgba(56, 189, 248, 0.15) !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+    border-radius: 50% !important;
 }}
 [data-testid="stChatMessage"]:has(.receiver-msg-marker) [data-testid="stChatMessageContent"],
 [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) [data-testid="stChatMessageContent"] {{
     text-align: left !important;
+    background: transparent !important;
+}}
+[data-testid="stChatMessage"]:has(.receiver-msg-marker) p,
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) p {{
+    text-align: left !important;
+    color: #f1f5f9 !important;
+    font-size: 1.02rem !important;
+    line-height: 1.75 !important;
 }}
 
 /* Hidden zero-height layout markers */
@@ -321,14 +328,60 @@ html {{
     height: 0 !important;
 }}
 
-/* Chat input glow animation */
-[data-testid="stChatInput"] {{
-    animation: glowPulse 3.5s ease-in-out infinite;
-    border-radius: 14px !important;
+/* ===== CLASSICAL FLOATING TYPING BAR (ONLY THE BAR, NO OUTER BOXES) ===== */
+[data-testid="stBottom"] {{
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }}
+[data-testid="stBottom"] > div {{
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}}
+
+/* Strip outer box, border and neon glow completely */
+[data-testid="stChatInput"] {{
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    animation: none !important;
+    padding: 0.5rem 0 1.2rem 0 !important;
+    max-width: 820px !important;
+    margin: 0 auto !important;
+}}
+
+/* Single sleek classical pill bar in black theme */
 [data-testid="stChatInput"] > div {{
-    border-color: rgba(139, 92, 246, 0.3) !important;
-    background: rgba(10, 6, 24, 0.8) !important;
+    background: rgba(14, 12, 20, 0.94) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 30px !important;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.75) !important;
+    backdrop-filter: blur(24px) !important;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+    padding: 4px 12px !important;
+}}
+[data-testid="stChatInput"] > div:focus-within {{
+    border-color: rgba(168, 85, 247, 0.55) !important;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85), 0 0 16px rgba(168, 85, 247, 0.18) !important;
+}}
+[data-testid="stChatInput"] textarea {{
+    color: #f8fafc !important;
+    font-size: 0.98rem !important;
+    background: transparent !important;
+}}
+[data-testid="stChatInput"] textarea::placeholder {{
+    color: #64748b !important;
+}}
+[data-testid="stChatInput"] button {{
+    border-radius: 50% !important;
+    background: #7c3aed !important;
+    color: #ffffff !important;
+    transition: transform 0.15s ease, background 0.15s ease !important;
+}}
+[data-testid="stChatInput"] button:hover {{
+    background: #9333ea !important;
+    transform: scale(1.06) !important;
 }}
 
 /* Expander 3D styling */

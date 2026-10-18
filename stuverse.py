@@ -240,19 +240,85 @@ html {{
     transform: translateY(0px) scale(0.98) !important;
 }}
 
-/* Chat messages 3D card lift */
+/* Chat messages 3D card lift & Alignment */
 [data-testid="stChatMessage"] {{
     animation: fadeSlideUp 0.35s ease-out;
-    border-radius: 14px !important;
-    border: 1px solid rgba(139, 92, 246, 0.15) !important;
-    background: rgba(15, 10, 32, 0.6) !important;
-    backdrop-filter: blur(10px);
+    border-radius: 18px !important;
     transition: all 0.3s ease;
-    margin-bottom: 0.7rem !important;
+    margin-bottom: 0.9rem !important;
+    display: flex !important;
 }}
-[data-testid="stChatMessage"]:hover {{
-    border-color: rgba(168, 85, 247, 0.35) !important;
-    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.15);
+
+/* SENDER / USER MESSAGE (ALIGNED TO RIGHT) */
+[data-testid="stChatMessage"]:has(.sender-msg-marker),
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {{
+    flex-direction: row-reverse !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    width: fit-content !important;
+    max-width: 82% !important;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.45) 0%, rgba(99, 102, 241, 0.38) 100%) !important;
+    border: 1px solid rgba(168, 85, 247, 0.55) !important;
+    border-radius: 20px 20px 4px 20px !important;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.28) !important;
+    backdrop-filter: blur(12px);
+}}
+[data-testid="stChatMessage"]:has(.sender-msg-marker):hover,
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]):hover {{
+    border-color: rgba(216, 180, 254, 0.7) !important;
+    box-shadow: 0 8px 28px rgba(168, 85, 247, 0.4) !important;
+    transform: translateY(-2px);
+}}
+[data-testid="stChatMessage"]:has(.sender-msg-marker) [data-testid="stChatMessageAvatar"],
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) [data-testid="stChatMessageAvatar"] {{
+    margin-left: 12px !important;
+    margin-right: 0 !important;
+}}
+[data-testid="stChatMessage"]:has(.sender-msg-marker) [data-testid="stChatMessageContent"],
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) [data-testid="stChatMessageContent"] {{
+    text-align: right !important;
+}}
+[data-testid="stChatMessage"]:has(.sender-msg-marker) p,
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) p {{
+    text-align: right !important;
+}}
+
+/* RECEIVER / AI ANSWER (ALIGNED TO LEFT) */
+[data-testid="stChatMessage"]:has(.receiver-msg-marker),
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {{
+    flex-direction: row !important;
+    margin-right: auto !important;
+    margin-left: 0 !important;
+    width: fit-content !important;
+    min-width: 55% !important;
+    max-width: 88% !important;
+    background: rgba(14, 9, 32, 0.85) !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+    border-radius: 20px 20px 20px 4px !important;
+    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15) !important;
+    backdrop-filter: blur(12px);
+}}
+[data-testid="stChatMessage"]:has(.receiver-msg-marker):hover,
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]):hover {{
+    border-color: rgba(56, 189, 248, 0.6) !important;
+    box-shadow: 0 8px 28px rgba(56, 189, 248, 0.25) !important;
+    transform: translateY(-2px);
+}}
+[data-testid="stChatMessage"]:has(.receiver-msg-marker) [data-testid="stChatMessageAvatar"],
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) [data-testid="stChatMessageAvatar"] {{
+    margin-right: 12px !important;
+    margin-left: 0 !important;
+}}
+[data-testid="stChatMessage"]:has(.receiver-msg-marker) [data-testid="stChatMessageContent"],
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) [data-testid="stChatMessageContent"] {{
+    text-align: left !important;
+}}
+
+/* Hidden zero-height layout markers */
+.sender-msg-marker, .receiver-msg-marker {{
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }}
 
 /* Chat input glow animation */
@@ -741,10 +807,16 @@ with st.expander("📎 **Upload Study Material / Question Photo**", expanded=Fal
 # ---------- Render Existing Messages ----------
 messages = current_chat.get("messages", [])
 for msg in messages:
-    with st.chat_message(msg["role"]):
-        if msg.get("file_name"):
-            st.caption(f"📎 Attached: **{msg['file_name']}**")
-        st.markdown(msg["text"])
+    role = msg["role"]
+    with st.chat_message(role):
+        if role == "user":
+            st.markdown('<div class="sender-msg-marker"></div>', unsafe_allow_html=True)
+            if msg.get("file_name"):
+                st.caption(f"📎 Attached: **{msg['file_name']}**")
+            st.markdown(msg["text"])
+        else:
+            st.markdown('<div class="receiver-msg-marker"></div>', unsafe_allow_html=True)
+            st.markdown(msg["text"])
 
 # ---------- Suggestion Pills ----------
 selected_prompt = None
@@ -789,6 +861,7 @@ if active_prompt:
             active_prompt = f"Document Content ({file_display_name}):\n```\n{text_content[:8000]}\n```\n\nStudent Question: {active_prompt}"
 
     with st.chat_message("user"):
+        st.markdown('<div class="sender-msg-marker"></div>', unsafe_allow_html=True)
         if file_display_name:
             st.caption(f"📎 Attached: **{file_display_name}**")
         st.markdown(active_prompt)
@@ -805,6 +878,7 @@ if active_prompt:
     gemini_contents.append({"role": "user", "parts": current_parts})
 
     with st.chat_message("assistant"):
+        st.markdown('<div class="receiver-msg-marker"></div>', unsafe_allow_html=True)
         answer = None
         ok = False
 

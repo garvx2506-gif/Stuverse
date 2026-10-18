@@ -1,4 +1,4 @@
-# Stuverse AI — Your Personal AI Teacher (v2.0)
+# Stuverse AI — Your Personal AI Teacher (v2.1)
 # Run: python -m streamlit run stuverse.py
 
 import os
@@ -13,7 +13,7 @@ from google.genai import types
 # ---------- Page Setup ----------
 st.set_page_config(
     page_title="Stuverse AI - Your Personal AI Teacher",
-    page_icon="🎓",
+    page_icon="\U0001f393",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -94,10 +94,10 @@ SUBJECTS = [
 ]
 
 SUGGESTIONS = {
-    "📐 Quadratic formula": "Quadratic formula kya hoti hai aur isse step-by-step kaise solve karte hain?",
-    "⚛️ Newton's laws of motion": "Newton ke teen laws of motion simple Hinglish mein daily-life examples ke sath samjhao",
-    "💻 Python loops": "Python mein for loop aur while loop kaise kaam karte hain with practical example?",
-    "🌿 Photosynthesis": "Photosynthesis ka biological process step by step easy language mein samjhao",
+    "\U0001f4d0 Quadratic formula": "What is the quadratic formula and how do you solve equations with it step by step?",
+    "\u269b\ufe0f Newton's laws of motion": "Explain Newton's three laws of motion with simple, real-life examples.",
+    "\U0001f4bb Python loops": "How do for loops and while loops work in Python? Give a practical example.",
+    "\U0001f33f Photosynthesis": "Explain the process of photosynthesis step by step in simple language.",
 }
 
 # ---------- API Key Initialization ----------
@@ -113,7 +113,7 @@ def get_gemini_client():
 
     if not api_key:
         st.error(
-            "GEMINI_API_KEY nahi mili! Streamlit Cloud par Secrets mein GEMINI_API_KEY add karo ya locally .streamlit/secrets.toml mein rakho."
+            "GEMINI_API_KEY not found! Add it in Streamlit Cloud Secrets or locally in `.streamlit/secrets.toml`."
         )
         st.stop()
     return genai.Client(api_key=api_key)
@@ -152,7 +152,7 @@ if "current_chat_id" not in st.session_state or st.session_state.current_chat_id
         new_id = str(uuid.uuid4())
         st.session_state.all_chats[new_id] = {
             "id": new_id,
-            "title": "Naya Chat",
+            "title": "New Chat",
             "created_at": datetime.now().strftime("%d %b, %I:%M %p"),
             "messages": [],
             "level": "College",
@@ -167,7 +167,7 @@ if "daily_count" not in st.session_state:
 current_id = st.session_state.current_chat_id
 current_chat = st.session_state.all_chats.get(current_id, {
     "id": current_id,
-    "title": "Naya Chat",
+    "title": "New Chat",
     "created_at": datetime.now().strftime("%d %b, %I:%M %p"),
     "messages": [],
     "level": "College",
@@ -176,15 +176,15 @@ current_chat = st.session_state.all_chats.get(current_id, {
 
 # ---------- Sidebar ----------
 with st.sidebar:
-    st.markdown("### 🎓 **Stuverse AI**")
+    st.markdown("### \U0001f393 **Stuverse AI**")
     st.caption("Your Personal AI Study Companion")
 
     # New Chat Button
-    if st.button("➕ **Naya Chat Shuru Karo**", use_container_width=True, type="primary"):
+    if st.button("\u2795 **Start New Chat**", use_container_width=True, type="primary"):
         new_id = str(uuid.uuid4())
         st.session_state.all_chats[new_id] = {
             "id": new_id,
-            "title": "Naya Chat",
+            "title": "New Chat",
             "created_at": datetime.now().strftime("%d %b, %I:%M %p"),
             "messages": [],
             "level": current_chat.get("level", "College"),
@@ -197,11 +197,11 @@ with st.sidebar:
     st.divider()
 
     # Settings Section
-    st.markdown("#### ⚙️ Settings")
+    st.markdown("#### \u2699\ufe0f Settings")
     current_level = current_chat.get("level", "College")
     current_level_idx = LEVELS.index(current_level) if current_level in LEVELS else 0
     level = st.selectbox(
-        "Tumhara level",
+        "Your level",
         LEVELS,
         index=current_level_idx,
         key=f"level_sel_{current_id}",
@@ -226,7 +226,7 @@ with st.sidebar:
     st.divider()
 
     # Chat History Section
-    st.markdown("#### 📜 Purani Chat History")
+    st.markdown("#### \U0001f4dc Chat History")
     chat_ids = list(st.session_state.all_chats.keys())
     chat_ids.reverse()  # Show newest first
 
@@ -234,7 +234,7 @@ with st.sidebar:
         cinfo = st.session_state.all_chats[cid]
         col_btn, col_del = st.columns([0.82, 0.18])
         is_active = (cid == current_id)
-        btn_label = f"{'👉 ' if is_active else '💬 '}{cinfo.get('title', 'Chat')}"
+        btn_label = f"{'\U0001f449 ' if is_active else '\U0001f4ac '}{cinfo.get('title', 'Chat')}"
         if col_btn.button(
             btn_label,
             key=f"hist_btn_{cid}",
@@ -244,13 +244,13 @@ with st.sidebar:
             st.session_state.current_chat_id = cid
             st.rerun()
 
-        if col_del.button("🗑️", key=f"del_btn_{cid}", help="Chat delete karo"):
+        if col_del.button("\U0001f5d1\ufe0f", key=f"del_btn_{cid}", help="Delete this chat"):
             del st.session_state.all_chats[cid]
             if not st.session_state.all_chats:
                 new_id = str(uuid.uuid4())
                 st.session_state.all_chats[new_id] = {
                     "id": new_id,
-                    "title": "Naya Chat",
+                    "title": "New Chat",
                     "created_at": datetime.now().strftime("%d %b, %I:%M %p"),
                     "messages": [],
                     "level": level,
@@ -267,24 +267,24 @@ with st.sidebar:
     # Daily Usage Meter
     used = st.session_state.daily_count
     remaining = DAILY_LIMIT - used
-    st.caption(f"📊 **{used}/{DAILY_LIMIT}** sawaal use hue")
+    st.caption(f"\U0001f4ca **{used}/{DAILY_LIMIT}** questions used")
     st.progress(min(used / DAILY_LIMIT, 1.0))
     if 0 < remaining <= 3:
-        st.warning(f"Sirf {remaining} sawaal bache hain aaj ke!")
+        st.warning(f"Only {remaining} questions left for today!")
 
     # Export Notes Button
     if current_chat.get("messages"):
-        export_text = f"# 🎓 Stuverse AI Study Notes\n"
+        export_text = f"# \U0001f393 Stuverse AI Study Notes\n"
         export_text += f"**Topic / Chat**: {current_chat.get('title')}\n"
         export_text += f"**Date**: {current_chat.get('created_at')}\n"
         export_text += f"**Level**: {current_chat.get('level')} | **Subject**: {current_chat.get('subject')}\n\n"
         export_text += "---\n\n"
         for m in current_chat["messages"]:
-            speaker = "🧑‍🎓 Student" if m["role"] == "user" else "🤖 Stuverse AI Teacher"
+            speaker = "\U0001f9d1\u200d\U0001f393 Student" if m["role"] == "user" else "\U0001f916 Stuverse AI Teacher"
             file_info = f" *(Attached: {m['file_name']})*" if m.get("file_name") else ""
             export_text += f"### {speaker}{file_info}:\n{m['text']}\n\n"
         st.download_button(
-            "📥 **Download Notes (.md)**",
+            "\U0001f4e5 **Download Notes (.md)**",
             data=export_text,
             file_name=f"Stuverse_Notes_{current_id[:6]}.md",
             mime="text/markdown",
@@ -292,47 +292,52 @@ with st.sidebar:
         )
 
 # ---------- System Prompt ----------
-subject_text = "koi bhi subject" if subject == "All subjects" else subject
+subject_text = "any subject" if subject == "All subjects" else subject
 TEACHER_PROMPT = f"""\
-Tum Stuverse AI ke friendly, encouraging aur highly knowledgeable personal AI teacher ho.
-Student ka level: {level}. Subject: {subject_text}.
-Student ko natural, simple Hinglish mein samjhao aur 'tum' bol ke baat karo.
+You are Stuverse AI, a friendly, encouraging, and highly knowledgeable personal AI teacher.
+Student's level: {level}. Subject: {subject_text}.
 
-Teacher Rules:
-1. Clear, simple aur easy-to-understand language use karo.
-2. Pehle core concept samjhao, phir ek practical real-life example do.
-3. Agar student ne koi sawaal ya photo/PDF upload ki hai:
-   - Problem ko step-by-step solve karo.
-   - Formulas aur key steps ko bold ya code block mein highlight karo.
-   - Common exam mistakes se bachne ki tip do.
-4. Student ke level ({level}) ke hisaab se difficulty maintain karo.
-5. End mein student ki concept clarity check karne ke liye ek chhota follow-up sawaal puchho.
+LANGUAGE RULE (very important):
+- By default, reply in clear, simple English.
+- If the student writes in Hinglish (a mix of Hindi and English), then mirror their style and reply in Hinglish too, using 'tum' to address them.
+- If the student writes in pure Hindi, reply in Hindi.
+- Always match the language the student is using.
+
+Teaching Rules:
+1. Use clear, simple, and easy-to-understand language.
+2. First explain the core concept, then give a practical real-life example.
+3. If the student has uploaded a photo, PDF, or document:
+   - Solve the problem step by step.
+   - Highlight formulas and key steps in bold or code blocks.
+   - Give a tip to avoid common exam mistakes.
+4. Maintain difficulty appropriate for the student's level ({level}).
+5. At the end, ask a short follow-up question to check the student's understanding.
 """
 
 # ---------- App Header ----------
 st.markdown("""
 <div class="stuverse-header">
-    <div class="stuverse-title">✨ Stuverse AI</div>
-    <p class="stuverse-subtitle">Your Personal AI Teacher • <b>Ask. Learn. Grow.</b></p>
+    <div class="stuverse-title">\u2728 Stuverse AI</div>
+    <p class="stuverse-subtitle">Your Personal AI Teacher \u2022 <b>Ask. Learn. Grow.</b></p>
 </div>
 """, unsafe_allow_html=True)
 
 # ---------- About Stuverse & Official Posters ----------
-with st.expander("🌟 **About Stuverse AI & Official Posters (Dekho Stuverse kya hai)**", expanded=False):
+with st.expander("\U0001f31f **About Stuverse AI & Official Posters**", expanded=False):
     # Four Pillars Cards
     c1, c2, c3, c4 = st.columns(4)
     with c1:
         st.markdown("""
         <div class="pillar-card">
-            <div class="pillar-icon">💬</div>
+            <div class="pillar-icon">\U0001f4ac</div>
             <div class="pillar-title">Ask</div>
-            <div class="pillar-desc">Get instant, step-by-step answers in simple Hinglish</div>
+            <div class="pillar-desc">Get instant, step-by-step answers to any question</div>
         </div>
         """, unsafe_allow_html=True)
     with c2:
         st.markdown("""
         <div class="pillar-card">
-            <div class="pillar-icon">📖</div>
+            <div class="pillar-icon">\U0001f4d6</div>
             <div class="pillar-title">Learn</div>
             <div class="pillar-desc">Summaries, notes, and crystal-clear concepts</div>
         </div>
@@ -340,7 +345,7 @@ with st.expander("🌟 **About Stuverse AI & Official Posters (Dekho Stuverse ky
     with c3:
         st.markdown("""
         <div class="pillar-card">
-            <div class="pillar-icon">🔬</div>
+            <div class="pillar-icon">\U0001f52c</div>
             <div class="pillar-title">Explore</div>
             <div class="pillar-desc">New ideas, coding, science, and essential skills</div>
         </div>
@@ -348,33 +353,33 @@ with st.expander("🌟 **About Stuverse AI & Official Posters (Dekho Stuverse ky
     with c4:
         st.markdown("""
         <div class="pillar-card">
-            <div class="pillar-icon">📈</div>
+            <div class="pillar-icon">\U0001f4c8</div>
             <div class="pillar-title">Grow</div>
             <div class="pillar-desc">Build your future with smarter AI tools</div>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("### 📸 **Official Posters**")
+    st.markdown("### \U0001f4f8 **Official Posters**")
     p_col1, p_col2 = st.columns(2)
     with p_col1:
         if os.path.exists("assets/poster1.jpeg"):
-            st.image("assets/poster1.jpeg", caption="🚀 Stuverse AI is here — Ask. Learn. Grow.", use_container_width=True)
+            st.image("assets/poster1.jpeg", caption="\U0001f680 Stuverse AI is here \u2014 Ask. Learn. Grow.", use_container_width=True)
     with p_col2:
         if os.path.exists("assets/poster2.jpeg"):
-            st.image("assets/poster2.jpeg", caption="📚 Your Study Companion in One Place", use_container_width=True)
+            st.image("assets/poster2.jpeg", caption="\U0001f4da Your Study Companion in One Place", use_container_width=True)
 
     st.markdown("""
     ---
-    **Smarter Studying. Bigger Dreams.** 🚀  
+    **Smarter Studying. Bigger Dreams.** \U0001f680
     Stuverse AI is crafted specially for students to make learning stress-free, engaging, and accessible.
-    
-    📲 **Share with friends:** [Share on WhatsApp](https://api.whatsapp.com/send?text=Check%20out%20Stuverse%20AI%20-%20Your%20Personal%20AI%20Teacher!%20https://stuverseai.streamlit.app/)
+
+    \U0001f4f2 **Share with friends:** [Share on WhatsApp](https://api.whatsapp.com/send?text=Check%20out%20Stuverse%20AI%20-%20Your%20Personal%20AI%20Teacher!%20https://stuverseai.streamlit.app/)
     """)
 
 # ---------- File Upload Section ----------
-with st.expander("📎 **Upload Study Material / Question Photo (Image / PDF / Notes)**", expanded=False):
+with st.expander("\U0001f4ce **Upload Study Material / Question Photo (Image / PDF / Notes)**", expanded=False):
     uploaded_file = st.file_uploader(
-        "Textbook question ki photo, handwritten notes, ya PDF upload karo:",
+        "Upload a photo of your textbook question, handwritten notes, or a PDF:",
         type=["png", "jpg", "jpeg", "webp", "pdf", "txt", "md"],
         help="Upload photos of doubts, question papers, or PDF lecture notes for step-by-step solutions",
         key="file_uploader",
@@ -387,14 +392,14 @@ with st.expander("📎 **Upload Study Material / Question Photo (Image / PDF / N
         col_f1, col_f2 = st.columns([0.45, 0.55])
         with col_f1:
             if file_mime.startswith("image/"):
-                st.image(uploaded_file, caption=f"📸 {file_name} ({file_size_kb:.1f} KB)", use_container_width=True)
+                st.image(uploaded_file, caption=f"\U0001f4f8 {file_name} ({file_size_kb:.1f} KB)", use_container_width=True)
             else:
-                st.info(f"📄 **{file_name}** ({file_size_kb:.1f} KB)")
+                st.info(f"\U0001f4c4 **{file_name}** ({file_size_kb:.1f} KB)")
         with col_f2:
             st.markdown("**Quick Actions for this file:**")
             col_q1, col_q2 = st.columns(2)
-            solve_btn = col_q1.button("📐 Step-by-step Solve Karo", use_container_width=True)
-            summary_btn = col_q2.button("📝 Short Summary Banao", use_container_width=True)
+            solve_btn = col_q1.button("\U0001f4d0 Solve Step-by-Step", use_container_width=True)
+            summary_btn = col_q2.button("\U0001f4dd Create Short Summary", use_container_width=True)
 
 # ---------- Render Existing Messages ----------
 messages = current_chat.get("messages", [])
@@ -402,13 +407,13 @@ messages = current_chat.get("messages", [])
 for msg in messages:
     with st.chat_message(msg["role"]):
         if msg.get("file_name"):
-            st.caption(f"📎 Attached: **{msg['file_name']}**")
+            st.caption(f"\U0001f4ce Attached: **{msg['file_name']}**")
         st.markdown(msg["text"])
 
 # ---------- Suggestion Pills (If no messages in chat) ----------
 selected_prompt = None
 if not messages and uploaded_file is None:
-    st.markdown("##### 💡 Try asking:")
+    st.markdown("##### \U0001f4a1 Try asking:")
     chips = list(SUGGESTIONS.keys())
     cols = st.columns(len(chips))
     for i, chip_text in enumerate(chips):
@@ -418,13 +423,13 @@ if not messages and uploaded_file is None:
 # Handle quick prompt buttons from file uploader
 if uploaded_file is not None:
     if 'solve_btn' in locals() and solve_btn:
-        selected_prompt = "Kripya is uploaded image/document ke question ko step-by-step solve karo aur detail mein samjhao."
+        selected_prompt = "Please solve the question in this uploaded image/document step by step and explain it in detail."
     elif 'summary_btn' in locals() and summary_btn:
-        selected_prompt = "Kripya is uploaded file ka easy language mein comprehensive summary aur main bullet points bana do."
+        selected_prompt = "Please create a comprehensive summary with the main bullet points from this uploaded file."
 
 # Chat input
 user_input = st.chat_input(
-    "Apna doubt yahan likho ya sawaal puchho..." if uploaded_file is None else f"📎 '{uploaded_file.name}' ke bare mein kya puchhna hai?",
+    "Type your doubt or question here..." if uploaded_file is None else f"\U0001f4ce What would you like to ask about '{uploaded_file.name}'?",
 )
 
 active_prompt = selected_prompt or user_input
@@ -433,8 +438,8 @@ active_prompt = selected_prompt or user_input
 if active_prompt:
     if st.session_state.daily_count >= DAILY_LIMIT:
         st.warning(
-            f"⚠️ Aaj ke {DAILY_LIMIT} free sawaal complete ho gaye. Kal subah phir se continue karo!",
-            icon="⏳",
+            f"You've used all {DAILY_LIMIT} free questions for today. Come back tomorrow!",
+            icon="\u23f3",
         )
         st.stop()
 
@@ -452,12 +457,12 @@ if active_prompt:
             file_part = types.Part.from_bytes(data=file_bytes, mime_type="application/pdf")
         else:
             text_content = file_bytes.decode("utf-8", errors="ignore")
-            active_prompt = f"Document Content ({file_display_name}):\n```\n{text_content[:8000]}\n```\n\nStudent Doubt: {active_prompt}"
+            active_prompt = f"Document Content ({file_display_name}):\n```\n{text_content[:8000]}\n```\n\nStudent Question: {active_prompt}"
 
     # Display user query in UI
     with st.chat_message("user"):
         if file_display_name:
-            st.caption(f"📎 Attached: **{file_display_name}**")
+            st.caption(f"\U0001f4ce Attached: **{file_display_name}**")
         st.markdown(active_prompt)
 
     # Prepare chat history for API
@@ -478,7 +483,7 @@ if active_prompt:
         answer = None
         ok = False
 
-        with st.status("🧠 Stuverse AI soch raha hai...", expanded=False) as status:
+        with st.status("\U0001f9e0 Stuverse AI is thinking...", expanded=False) as status:
             for attempt in range(3):
                 try:
                     response = client.models.generate_content(
@@ -492,17 +497,17 @@ if active_prompt:
                     if answer:
                         ok = True
                     else:
-                        answer = "AI ne khali jawab diya. Kripya sawaal dobara puchho."
+                        answer = "The AI returned an empty response. Please try asking again."
                     break
                 except Exception as e:
                     err_msg = str(e)
                     if "503" in err_msg and attempt < 2:
                         time.sleep(2)
                     else:
-                        answer = f"Maaf karna, ek takneeki samasya aayi: {err_msg}"
+                        answer = f"Sorry, a technical error occurred: {err_msg}"
                         break
             status.update(
-                label="Taiyaar!" if ok else "Error",
+                label="Ready!" if ok else "Error",
                 state="complete" if ok else "error",
             )
 
